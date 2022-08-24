@@ -1,0 +1,27 @@
+[
+  {
+    "url": "/api/services",
+    "body": [{
+      "assignedServers": [
+        {
+          "serverId": "mkel1"
+        }
+      ],
+      "serviceId": "TestService",
+      "serviceType": "live_encoding"
+    }],
+    "status": 200
+  },
+  {
+    "url": "/api/servers",
+    "body": [
+      {
+        "serverId": "TestServer",
+        "supportedServiceTypes": ["live_encoding"],
+        "tags": [],
+        "timeout": 10
+      }
+    ],
+    "status": 200
+  }
+]
