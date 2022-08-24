@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	"mopi/mopi"
+	"mopi/pkg/mopi"
 	"net/http"
 )
 
