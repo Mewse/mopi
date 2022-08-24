@@ -1,10 +1,16 @@
-package mopi
+package main
 
 import (
-	"github.com/gorilla/mux"
+	"log"
+	"mopi/mopi"
+	"net/http"
 )
 
 func main() {
-	r := mux.NewRouter()
+	s := mopi.NewServer()
+	http.HandleFunc("/register", s.Register)
+	http.HandleFunc("/", s.Endpoint)
+
+	log.Fatal(http.ListenAndServe("0.0.0.0:3000", nil))
 
 }
