@@ -3,7 +3,6 @@ package mopi
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -46,14 +45,17 @@ func (s *Server) Endpoint(w http.ResponseWriter, r *http.Request) {
 	url := r.URL.Path
 	resp, ok := s.Routes[url]
 	if ok {
-		out, err := json.Marshal(resp.Body)
-		if err != nil {
-			log.Printf("Unable to unmarshall body for response %s", url)
-			w.WriteHeader(500)
-		} else {
-			w.Write(out)
+		if r.Method == http.MethodGet {
+			out, err := json.Marshal(resp.Body)
+			if err != nil {
+				log.Printf("Unable to unmarshall body for response %s", url)
+				w.WriteHeader(500)
+			} else {
+				w.Write(out)
+			}
+		} else if r.Method == http.MethodDelete {
+			delete(s.Routes, url)
 		}
-
 	} else {
 		log.Printf("No response found for url %s", url)
 		w.WriteHeader(404)
@@ -61,7 +63,7 @@ func (s *Server) Endpoint(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) LoadStaticConfigurations() {
-	files, err := ioutil.ReadDir("configurations/")
+	files, err := os.ReadDir("configurations/")
 	if err != nil {
 		log.Fatal(err)
 	}
